@@ -1,4 +1,23 @@
 let ingredients = []
+let ingredientCounter = 1;
+
+const deleteIngredient = (event) => {
+  const buttonId = event.target.id;
+  ingredients.forEach((ingredient, index) => {
+    if(ingredient.id === buttonId) {
+      ingredients.splice(index, 1);
+    }
+  })
+  domStringBuilder(ingredients);
+  addDeleteEvents();
+}
+
+const addDeleteEvents = () => {
+  const deleteButtons = document.getElementsByClassName('delete');
+  for(let i = 0; i < deleteButtons.length; i++) {
+    deleteButtons[i].addEventListener('click', deleteIngredient);
+  }
+}
 
 const domStringBuilder = (array) => {
   let domString = '';
@@ -6,7 +25,7 @@ const domStringBuilder = (array) => {
     domString += `<div class="card col-3">`;
     domString += `  <div class="card-body">`;
     domString += `    <h5 class="card-title">${item.item}</h5>`;
-    // domString += `    <a href="#" class="btn btn-primary">Go somewhere</a>`;
+    domString += `    <button id=${item.id} class="btn btn-dark delete">Delete</button>`;
     domString += `  </div>`;
     domString += `</div>`;
   })
@@ -17,8 +36,11 @@ const addIngredient = (event) => {
   event.preventDefault()
   const ingredient = {};
   ingredient.item = document.getElementById('ingredient').value;
+  ingredient.id = `ingredient${ingredientCounter}`
   ingredients.push(ingredient);
-  domStringBuilder(ingredients)
+  ingredientCounter++;
+  domStringBuilder(ingredients);
+  addDeleteEvents();
   document.getElementById('ingredient').value = '';
 }
 
