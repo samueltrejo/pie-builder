@@ -1,6 +1,24 @@
 let ingredients = []
 let ingredientCounter = 1;
 
+const deleteIngredient = (event) => {
+  const buttonId = event.target.id;
+  ingredients.forEach((ingredient, index) => {
+    if(ingredient.id === buttonId) {
+      ingredients.splice(index, 1);
+    }
+  })
+  domStringBuilder(ingredients);
+  addDeleteEvents();
+}
+
+const addDeleteEvents = () => {
+  const deleteButtons = document.getElementsByClassName('delete');
+  for(let i = 0; i < deleteButtons.length; i++) {
+    deleteButtons[i].addEventListener('click', deleteIngredient);
+  }
+}
+
 const domStringBuilder = (array) => {
   let domString = '';
   array.forEach((item) => {
@@ -21,7 +39,8 @@ const addIngredient = (event) => {
   ingredient.id = `ingredient${ingredientCounter}`
   ingredients.push(ingredient);
   ingredientCounter++;
-  domStringBuilder(ingredients)
+  domStringBuilder(ingredients);
+  addDeleteEvents();
   document.getElementById('ingredient').value = '';
 }
 
